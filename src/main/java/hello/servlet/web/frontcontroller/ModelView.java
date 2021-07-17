@@ -11,11 +11,11 @@ import java.util.Map;
 @Getter
 @Setter
 public class ModelView {
-    private String viewName;
-    private Map<String, Object> model = new HashMap<>();
+    private String viewName; //논리적인 이름을 저장
+    private Map<String, Object> model = new HashMap<>();//모델 즉, 데이터들을 담는 역할(request객체의역할)
 
-    public ModelView(String viewName) {
+    //뷰의 이름만 가지는 생성자 생성
+    public ModelView(String viewName){
         this.viewName = viewName;
     }
-
 }

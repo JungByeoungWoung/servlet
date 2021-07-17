@@ -29,9 +29,10 @@ public class MyView {
         RequestDispatcher dispatcher = request.getRequestDispatcher(viewPath);
         dispatcher.forward(request,response);
     }
-
+    //컨트롤러에서 jsp로 모델에 있는 값을 넘겨주기 위한 메서드
     private void modelToReqeustAttribute(Map<String, Object> model, HttpServletRequest request) {
         //render메서드를 사용하면 모델에 있는 값을 다 꺼내서 request.setAttribute로 다 담는다
+        //(key, value)에 request.setAttribute(key, value) 값들을 다 넣는다는 람다식
         model.forEach((key, value) -> request.setAttribute(key, value));
     }
 }

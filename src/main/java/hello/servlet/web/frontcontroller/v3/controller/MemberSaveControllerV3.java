@@ -7,7 +7,7 @@ import hello.servlet.web.frontcontroller.v3.ControllerV3;
 
 import java.util.Map;
 
-public class MemberSaveControllerV3 implements ControllerV3 {
+public class MemberSaveControllerV3 implements ControllerV3{
     private MemberRepository memberRepository = MemberRepository.getInstance();
     @Override
     public ModelView process(Map<String, String> paramMap) {
@@ -18,6 +18,8 @@ public class MemberSaveControllerV3 implements ControllerV3 {
         memberRepository.save(member);
 
         ModelView mv = new ModelView("save-result");
+        //모델을 가져와서 member를 넣어줌
+        //기존 서블릿 의존 시 방법 : request.setAttribute("member",member);
         mv.getModel().put("member", member);
         return mv;
     }
