@@ -6,7 +6,11 @@ import hello.servlet.web.frontcontroller.v3.ControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberFormControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberListControllerV3;
 import hello.servlet.web.frontcontroller.v3.controller.MemberSaveControllerV3;
+import hello.servlet.web.frontcontroller.v4.controller.MemberFormControllerV4;
+import hello.servlet.web.frontcontroller.v4.controller.MemberListControllerV4;
+import hello.servlet.web.frontcontroller.v4.controller.MemberSaveControllerV4;
 import hello.servlet.web.frontcontroller.v5.adapter.ControllerV3HandlerAdapter;
+import hello.servlet.web.frontcontroller.v5.adapter.ControllerV4HandlerAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,12 +41,18 @@ public class FrontControllerServletV5 extends HttpServlet {
         handlerMappingMap.put("/front-controller/v5/v3/members/new-form",new MemberFormControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members/save",new MemberSaveControllerV3());
         handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+        //v4 핸들러(컨트롤러) 맵핑 정보 생성
+        handlerMappingMap.put("/front-controller/v5/v4/members/new-form",new MemberFormControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members/save",new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members", new MemberListControllerV4());
     }
 
     //핸들러 어댑터 목록중 v3에 맞는 어댑터를 핸들러 어댑터 리스트에 추가해주는 메서드
    private void initHandlerAdapters() {
         //핸들러 어댑터 목록중 v3에 맞는 어댑터를 핸들러 어댑터 리스트에 넣는다.
         handlerAdapters.add(new ControllerV3HandlerAdapter());
+       //핸들러 어댑터 목록중 v4에 맞는 어댑터를 핸들러 어댑터 리스트에 넣는다.
+       handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
 
     @Override
