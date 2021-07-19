@@ -1,5 +1,6 @@
 package hello.servlet.web.frontcontroller.v4;
 
+import hello.servlet.web.frontcontroller.ModelView;
 import hello.servlet.web.frontcontroller.MyView;
 import hello.servlet.web.frontcontroller.v4.controller.MemberFormControllerV4;
 import hello.servlet.web.frontcontroller.v4.controller.MemberListControllerV4;
@@ -33,13 +34,17 @@ public class FrontControllerServletV4 extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
+        //request 요청이 왔을 때 요청하는 값들을 저장하는 map
         Map<String, String> paramMap = createParamMap(request);
+        //request 요청이 왔을 때 model도 넘겨줘야하기 때문에 model 생성
         Map<String, Object> model = new HashMap<>();
+
+        //컨트롤러에서 처리한 process에서 paramMap과 model을 받은 후 viewName으로 저장
         String viewName = controller.process(paramMap, model);
 
         MyView view = viewResolver(viewName);
-        view.render(model,request,response);
+
+        view.render(model, request, response);
 
     }
     private MyView viewResolver(String viewName){
