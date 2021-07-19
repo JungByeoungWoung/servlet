@@ -18,8 +18,7 @@ public class MemberSaveControllerV3 implements ControllerV3{
         memberRepository.save(member);
 
         ModelView mv = new ModelView("save-result");
-        //모델을 가져와서 member를 넣어줌
-        //기존 서블릿 의존 시 방법 : request.setAttribute("member",member);
+        //getModel() 모델 객체를 가져온뒤에 모델은 map이기 때문에 데이터 값을 key,value 형식으로 넣는다
         mv.getModel().put("member", member);
         return mv;
     }

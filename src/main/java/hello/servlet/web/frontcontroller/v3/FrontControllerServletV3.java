@@ -16,32 +16,33 @@ import java.util.HashMap;
 import java.util.Map;
 @WebServlet(name = "frontControllerServletV3", urlPatterns = "/front-controller/v3/*")
 public class FrontControllerServletV3 extends HttpServlet{
+
     private Map<String, ControllerV3> controllerMap = new HashMap<>();
 
     public FrontControllerServletV3() {
         controllerMap.put("/front-controller/v3/members/new-form",new MemberFormControllerV3());
-        controllerMap.put("/front-controller/v3/members/save-result",new MemberSaveControllerV3());
+        controllerMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
         controllerMap.put("/front-controller/v3/members", new MemberListControllerV3());
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        ControllerV3 controllerV3 = controllerMap.get(requestURI);
-        if (controllerV3 == null){
+        ControllerV3 controller = controllerMap.get(requestURI);
+        if(controller == null){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         Map<String, String> paramMap = createParamMap(request);
 
-        //paramMap에 저장한 값을 modelview에 저장
-        ModelView mv = controllerV3.process(paramMap);
-        String viewName = mv.getViewName(); // 모델에서 논리 이름만 가져온 것을 변수에 저장
-        //ex) new-form -> /WEB-INF/views/new-form.jsp로 변환
-        MyView view = viewResolver(viewName);
+        //2. modelview를 생성해서 request 값들을 저장한 paramMap을 넘겨줌
+        ModelView mv = controller.process(paramMap);
+        String viewName = mv.getViewName();
 
-        view.render(mv.getModel(),request, response);
+       MyView view = viewResolver(viewName);
+
+       view.render(mv.getModel(),request, response);
     }
 
     private MyView viewResolver(String viewName) {
@@ -49,13 +50,12 @@ public class FrontControllerServletV3 extends HttpServlet{
     }
 
     private Map<String, String> createParamMap(HttpServletRequest request) {
-        //paramMap을 넘겨줘야함
-        //그리고 paramMap의 값을 다 꺼내야함
-        //request.getParameterNames(). -> requset에 있는 모든파라미터를다 가져옴
-        //계속 돌리면서 paramName이라는 변수에
-        // key 값은 paramName, values는 request.getParameter(paramName)을 넣음
+        //컨트롤러에 클라이언트가 request한 paramMap을 넘겨줘야한다.
+        //1. request 했을 때의 값들이 저장되어있는 paramMap의 값을 다 꺼내야한다.
         Map<String, String> paramMap = new HashMap<>();
         request.getParameterNames().asIterator()
+                //paramName은 키의 변수명/request.getParameter(paramName)은 value가 되어
+                //request에서 가져온 모든 값들을 map에 저장
                 .forEachRemaining(paramName -> paramMap.put(paramName, request.getParameter(paramName)));
         return paramMap;
     }
